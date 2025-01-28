@@ -19,7 +19,11 @@ glfw: (build from original website 2025), glew (build from original website 2025
 
 ![lib.png](README/lib.png)
 
-5. Run the project
+5. Dont forget about dlls
+
+![folder.png](README/folder.png)
+
+6. Run the project
 
 # Links
 
