@@ -1,5 +1,5 @@
 #include "Engine.h"
-#include "GameObject.h"
+#include "game/GameObject.h"
 #include "systems/RenderSystem.h"
 
 #include <assert.h>
