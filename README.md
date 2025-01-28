@@ -10,7 +10,8 @@ At the moment, the task is to implement the basic functions of the engine withou
 
 1. First we need to install our repository, do it with git clone or just download the archive.
 2. Second we need install all library dependencies: glm (latest version on 2025),
-glfw: (build from original website 2025), glew (build from original website 2025), stb_image.h (from github repository 2025)
+glfw: (build from original website 2025), glew (build from original website 2025), stb_image.h (from github repository 2025),
+assimp 2025 from github repository, build everything in release mode.
 3. Than copy all header files in include directory inside project, should be like this:
 
 ![include.png](README/include.png)
