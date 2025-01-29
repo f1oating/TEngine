@@ -16,7 +16,7 @@ public:
 	void AddSprite(class SpriteComponent* sprite);
 	void RemoveSprite(class SpriteComponent* sprite);
 
-	static RenderSystem& Get();
+	static RenderSystem* Get();
 
 private:
 	bool LoadShaders();

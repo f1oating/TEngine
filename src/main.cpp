@@ -7,16 +7,16 @@
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	Engine engine = Engine::Get();
+	Engine* engine = Engine::Get();
 
-	if (!engine.StartUp()) return 1;
+	if (!engine->StartUp()) return 1;
 
 	GameObject* object = new GameObject();
 	SpriteComponent* sprite = new SpriteComponent(object);
-	sprite->SetTexture(TextureManager::Get().GetTexture("res\\textures\\cat.jpg"));
+	sprite->SetTexture(TextureManager::Get()->GetTexture("res\\textures\\cat.jpg"));
 
-	engine.RunLoop();
-	engine.Shutdown();
+	engine->RunLoop();
+	engine->Shutdown();
 
 	return 0;
 }

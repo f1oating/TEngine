@@ -7,7 +7,7 @@
 #include <assert.h>
 
 TextureManager::TextureManager() :
-	mEngine(&Engine::Get())
+	mEngine(Engine::Get())
 {}
 
 bool TextureManager::StartUp()
@@ -51,10 +51,10 @@ Texture* TextureManager::GetTexture(std::string fileName)
 	return tex;
 }
 
-TextureManager& TextureManager::Get()
+TextureManager* TextureManager::Get()
 {
 	static TextureManager* manager = new TextureManager();
 	if (!manager) { manager = new TextureManager(); }
 	assert(manager);
-	return *manager;
+	return manager;
 }

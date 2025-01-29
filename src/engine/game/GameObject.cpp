@@ -3,7 +3,7 @@
 #include "components/Component.h"
 
 GameObject::GameObject() :
-	mEngine(&Engine::Get())
+	mEngine(Engine::Get())
 	, mPosition(0)
 	, mRotation(1.0f, 0.0f, 0.0f, 0.0f)
 	, mWorldTransform(1.0f)

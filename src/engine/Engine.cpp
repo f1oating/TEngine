@@ -15,12 +15,12 @@ Engine::Engine() :
 
 bool Engine::StartUp()
 {
-	if (!InitializeGLFW()) { return false; }
+	if (!InitializeGL()) { return false; }
 
-	mRenderSystem = &RenderSystem::Get();
+	mRenderSystem = RenderSystem::Get();
 	mRenderSystem->StartUp();
 
-	TextureManager::Get().StartUp();
+	TextureManager::Get()->StartUp();
 
 	mIsRunning = true;
 	return true;
@@ -32,21 +32,19 @@ void Engine::RunLoop()
 	{
 		if (glfwWindowShouldClose(mWindow)) { mIsRunning = false; }
 
-		glClear(GL_COLOR_BUFFER_BIT);
-
 		Update();
 		GenerateOutput();
 
-		glfwSwapBuffers(mWindow);
 		glfwPollEvents();
 	}
 }
 
 void Engine::Shutdown()
 {
-	UnInitializeGLFW();
-	RenderSystem::Get().Shutdown();
-	TextureManager::Get().Shutdown();
+	UnInitializeGL();
+	mRenderSystem->Shutdown();
+
+	TextureManager::Get()->Shutdown();
 }
 
 void Engine::Update()
@@ -77,7 +75,7 @@ void Engine::GenerateOutput()
 	mRenderSystem->Draw();
 }
 
-bool Engine::InitializeGLFW()
+bool Engine::InitializeGL()
 {
 	if (!glfwInit()) {
 		return false;
@@ -99,18 +97,18 @@ bool Engine::InitializeGLFW()
 	return true;
 }
 
-void Engine::UnInitializeGLFW()
+void Engine::UnInitializeGL()
 {
 	glfwDestroyWindow(mWindow);
 	glfwTerminate();
 }
 
-Engine& Engine::Get()
+Engine* Engine::Get()
 {
 	static Engine* engine = new Engine();
 	if (!engine) { engine = new Engine(); }
 	assert(engine);
-	return *engine;
+	return engine;
 }
 
 void Engine::AddObject(GameObject* actor)

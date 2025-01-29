@@ -14,7 +14,7 @@ public:
 
 	class Texture* GetTexture(std::string fileName);
 
-	static TextureManager& Get();
+	static TextureManager* Get();
 
 private:
 	class Engine* mEngine;

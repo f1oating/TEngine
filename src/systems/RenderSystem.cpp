@@ -5,9 +5,10 @@
 #include "graphics/Shader.h"
 
 #include <assert.h>
+#include <GLFW/glfw3.h>
 
 RenderSystem::RenderSystem() :
-	mEngine(&Engine::Get())
+	mEngine(Engine::Get())
 	, mSpriteShader(nullptr)
 	, mSpriteVerts(nullptr)
 {}
@@ -33,6 +34,8 @@ void RenderSystem::Shutdown()
 
 void RenderSystem::Draw()
 {
+	glClear(GL_COLOR_BUFFER_BIT);
+
 	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
@@ -47,6 +50,8 @@ void RenderSystem::Draw()
 			sprite->Draw(mSpriteShader);
 		}
 	}
+
+	glfwSwapBuffers(mEngine->GetWindow());
 }
 
 void RenderSystem::AddSprite(SpriteComponent* sprite)
@@ -100,10 +105,10 @@ void RenderSystem::CreateSpriteVerts()
 	mSpriteVerts = new VertexArray(vertices, 4, VertexArray::PosNormTex, indices, 6);
 }
 
-RenderSystem& RenderSystem::Get()
+RenderSystem* RenderSystem::Get()
 {
 	static RenderSystem* system = new RenderSystem();
 	if (!system) { system = new RenderSystem(); }
 	assert(system);
-	return *system;
+	return system;
 }

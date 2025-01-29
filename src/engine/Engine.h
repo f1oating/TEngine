@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -15,7 +14,7 @@ public:
 	void RunLoop();
 	void Shutdown();
 
-	static Engine& Get();
+	static Engine* Get();
 
 	bool IsRunning() const { return mIsRunning; }
 
@@ -27,8 +26,8 @@ public:
 private:
 	void Update();
 	void GenerateOutput();
-	bool InitializeGLFW();
-	void UnInitializeGLFW();
+	bool InitializeGL();
+	void UnInitializeGL();
 
 	class RenderSystem* mRenderSystem;
 

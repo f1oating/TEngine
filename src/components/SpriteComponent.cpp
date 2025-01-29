@@ -7,19 +7,19 @@
 
 SpriteComponent::SpriteComponent(GameObject* owner, int drawOrder)
 	:Component(owner)
-	, mEngine(&Engine::Get())
+	, mEngine(Engine::Get())
 	, mTexture(nullptr)
 	, mDrawOrder(drawOrder)
 	, mTexWidth(0)
 	, mTexHeight(0)
 	, mVisible(true)
 {
-	RenderSystem::Get().AddSprite(this);
+	RenderSystem::Get()->AddSprite(this);
 }
 
 SpriteComponent::~SpriteComponent()
 {
-	RenderSystem::Get().RemoveSprite(this);
+	RenderSystem::Get()->RemoveSprite(this);
 }
 
 void SpriteComponent::Draw(Shader* shader)

@@ -3,7 +3,7 @@
 #include "engine/game/GameObject.h"
 
 Component::Component(class GameObject* owner, int updateOrder) :
-	mEngine(&Engine::Get())
+	mEngine(Engine::Get())
 	,mOwner(owner)
 	,mUpdateOrder(updateOrder)
 {
