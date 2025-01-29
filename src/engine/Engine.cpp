@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include "game/GameObject.h"
 #include "systems/RenderSystem.h"
+#include "managers/TextureManager.h"
 
 #include <assert.h>
 #include <algorithm>
@@ -16,6 +17,7 @@ bool Engine::StartUp()
 	if (!InitializeGLFW()) { return false; }
 
 	RenderSystem::Get().StartUp();
+	TextureManager::Get().StartUp();
 
 	mIsRunning = true;
 	return true;
@@ -39,6 +41,8 @@ void Engine::RunLoop()
 void Engine::Shutdown()
 {
 	UnInitializeGLFW();
+	RenderSystem::Get().Shutdown();
+	TextureManager::Get().Shutdown();
 }
 
 void Engine::Update()

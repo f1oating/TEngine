@@ -1,3 +1,6 @@
+## License
+This project is distributed under the [MIT License](LICENSE).
+
 # TEngine
 
 TEngine is a game engine based on a component-based architecture similar to Unity. The goal of the project is to create a full-fledged game engine with the tools necessary for development, so that people can use it to create their own games, and for educational purposes.
