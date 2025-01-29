@@ -12,7 +12,7 @@ TextureManager::TextureManager() :
 
 bool TextureManager::StartUp()
 {
-	stbi_set_flip_vertically_on_load(true);
+	stbi_set_flip_vertically_on_load(false);
 
 	return true;
 }
@@ -53,8 +53,8 @@ Texture* TextureManager::GetTexture(std::string fileName)
 
 TextureManager& TextureManager::Get()
 {
-	static TextureManager* engine = new TextureManager();
-	if (!engine) { engine = new TextureManager(); }
-	assert(engine);
-	return *engine;
+	static TextureManager* manager = new TextureManager();
+	if (!manager) { manager = new TextureManager(); }
+	assert(manager);
+	return *manager;
 }

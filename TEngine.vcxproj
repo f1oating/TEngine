@@ -131,6 +131,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\components\Component.cpp" />
+    <ClCompile Include="src\components\SpriteComponent.cpp" />
     <ClCompile Include="src\engine\game\GameObject.cpp" />
     <ClCompile Include="src\engine\Engine.cpp" />
     <ClCompile Include="src\graphics\animation\Animation.cpp" />
@@ -147,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\components\Component.h" />
+    <ClInclude Include="src\components\SpriteComponent.h" />
     <ClInclude Include="src\engine\game\GameObject.h" />
     <ClInclude Include="src\engine\Engine.h" />
     <ClInclude Include="src\graphics\animation\Animation.h" />

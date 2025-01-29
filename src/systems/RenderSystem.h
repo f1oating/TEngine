@@ -19,8 +19,13 @@ public:
 	static RenderSystem& Get();
 
 private:
+	bool LoadShaders();
+	void CreateSpriteVerts();
+
 	class Engine* mEngine;
 
+	class Shader* mSpriteShader;
+	class VertexArray* mSpriteVerts;
 	std::vector<class SpriteComponent*> mSprites;
 
 };

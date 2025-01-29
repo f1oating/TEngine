@@ -8,6 +8,7 @@
 
 Engine::Engine() :
 	mIsRunning(false)
+	,mRenderSystem(nullptr)
 	,mWindow(nullptr)
 	,mUpdatingObjects(false)
 {}
@@ -16,7 +17,9 @@ bool Engine::StartUp()
 {
 	if (!InitializeGLFW()) { return false; }
 
-	RenderSystem::Get().StartUp();
+	mRenderSystem = &RenderSystem::Get();
+	mRenderSystem->StartUp();
+
 	TextureManager::Get().StartUp();
 
 	mIsRunning = true;
@@ -32,6 +35,7 @@ void Engine::RunLoop()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		Update();
+		GenerateOutput();
 
 		glfwSwapBuffers(mWindow);
 		glfwPollEvents();
@@ -66,6 +70,11 @@ void Engine::Update()
 		mObjects.emplace_back(pending);
 	}
 	mPendingObjects.clear();
+}
+
+void Engine::GenerateOutput()
+{
+	mRenderSystem->Draw();
 }
 
 bool Engine::InitializeGLFW()

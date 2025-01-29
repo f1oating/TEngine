@@ -4,6 +4,11 @@
 
 GameObject::GameObject() :
 	mEngine(&Engine::Get())
+	, mPosition(0)
+	, mRotation(1.0f, 0.0f, 0.0f, 0.0f)
+	, mWorldTransform(1.0f)
+	, mScale(1.0f)
+	, mRecomputeTransform(true)
 {
 	mEngine->AddObject(this);
 }

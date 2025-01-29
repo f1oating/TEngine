@@ -26,8 +26,11 @@ public:
 
 private:
 	void Update();
+	void GenerateOutput();
 	bool InitializeGLFW();
 	void UnInitializeGLFW();
+
+	class RenderSystem* mRenderSystem;
 
 	bool mIsRunning;
 	GLFWwindow* mWindow;
