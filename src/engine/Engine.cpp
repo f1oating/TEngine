@@ -1,4 +1,5 @@
 #include "Engine.h"
+#include "Window.h"
 #include "game/GameObject.h"
 #include "systems/RenderSystem.h"
 #include "managers/TextureManager.h"
@@ -8,19 +9,20 @@
 
 Engine::Engine() :
 	mIsRunning(false)
-	,mRenderSystem(nullptr)
 	,mWindow(nullptr)
+	,mRenderSystem(nullptr)
 	,mUpdatingObjects(false)
 {}
 
 bool Engine::StartUp()
 {
-	if (!InitializeGL()) { return false; }
+	mWindow = Window::Get();
+	if (!mWindow->StartUp("TEngine", 800, 600)) { return false; }
 
 	mRenderSystem = RenderSystem::Get();
-	mRenderSystem->StartUp();
+	if (!mRenderSystem->StartUp()) { return false; }
 
-	TextureManager::Get()->StartUp();
+	if (!TextureManager::Get()->StartUp()) { return false; }
 
 	mIsRunning = true;
 	return true;
@@ -30,8 +32,6 @@ void Engine::RunLoop()
 {
 	while (mIsRunning)
 	{
-		if (glfwWindowShouldClose(mWindow)) { mIsRunning = false; }
-
 		Update();
 		GenerateOutput();
 
@@ -41,14 +41,15 @@ void Engine::RunLoop()
 
 void Engine::Shutdown()
 {
-	UnInitializeGL();
+	Window::Get()->Shutdown();
 	mRenderSystem->Shutdown();
-
 	TextureManager::Get()->Shutdown();
 }
 
 void Engine::Update()
 {
+	if (mWindow->ShouldClose()) { mIsRunning = false; }
+
 	static float deltaTime = 0.0f;
 	static float lastFrame = 0.0f;
 
@@ -73,34 +74,6 @@ void Engine::Update()
 void Engine::GenerateOutput()
 {
 	mRenderSystem->Draw();
-}
-
-bool Engine::InitializeGL()
-{
-	if (!glfwInit()) {
-		return false;
-	}
-
-	mWindow = glfwCreateWindow(800, 600, "TEngine", nullptr, nullptr);
-	if (!mWindow) {
-		glfwTerminate();
-		return false;
-	}
-
-	glfwMakeContextCurrent(mWindow);
-
-	if (glewInit() != GLEW_OK) {
-		glfwTerminate();
-		return false;
-	}
-
-	return true;
-}
-
-void Engine::UnInitializeGL()
-{
-	glfwDestroyWindow(mWindow);
-	glfwTerminate();
 }
 
 Engine* Engine::Get()

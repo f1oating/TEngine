@@ -19,7 +19,6 @@ public:
 	bool GetVisible() const { return mVisible; }
 
 protected:
-	class Engine* mEngine;
 	class Texture* mTexture;
 	int mDrawOrder;
 	int mTexWidth;

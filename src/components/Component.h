@@ -12,7 +12,6 @@ public:
 	int GetUpdateOrder() const { return mUpdateOrder; }
 
 private:
-	class Engine* mEngine;
 	class GameObject* mOwner;
 	int mUpdateOrder;
 

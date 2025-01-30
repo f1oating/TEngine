@@ -1,10 +1,8 @@
 #include "Component.h"
-#include "engine/Engine.h"
 #include "engine/game/GameObject.h"
 
 Component::Component(class GameObject* owner, int updateOrder) :
-	mEngine(Engine::Get())
-	,mOwner(owner)
+	mOwner(owner)
 	,mUpdateOrder(updateOrder)
 {
 	mOwner->AddComponent(this);

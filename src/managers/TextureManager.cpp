@@ -1,13 +1,11 @@
 #include "TextureManager.h"
 #include "graphics/Texture.h"
-#include "engine/Engine.h"
 
 #include "stb_image.h"
 
 #include <assert.h>
 
-TextureManager::TextureManager() :
-	mEngine(Engine::Get())
+TextureManager::TextureManager()
 {}
 
 bool TextureManager::StartUp()

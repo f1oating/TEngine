@@ -3,19 +3,18 @@
 #include "components/Component.h"
 
 GameObject::GameObject() :
-	mEngine(Engine::Get())
-	, mPosition(0)
+	mPosition(0)
 	, mRotation(1.0f, 0.0f, 0.0f, 0.0f)
 	, mWorldTransform(1.0f)
 	, mScale(1.0f)
 	, mRecomputeTransform(true)
 {
-	mEngine->AddObject(this);
+	Engine::Get()->AddObject(this);
 }
 
 GameObject::~GameObject() 
 {
-	mEngine->RemoveObject(this);
+	Engine::Get()->RemoveObject(this);
 
 	while (!mComponents.empty())
 	{

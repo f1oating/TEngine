@@ -17,8 +17,6 @@ public:
 	static TextureManager* Get();
 
 private:
-	class Engine* mEngine;
-
 	std::unordered_map<std::string, class Texture*> mTextures;
 
 };

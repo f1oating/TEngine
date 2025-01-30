@@ -30,7 +30,6 @@ public:
 	const glm::mat4& GetWorldTransform() const { return mWorldTransform; }
 
 private:
-	class Engine* mEngine;
 	std::vector<class Component*> mComponents;
 
 	glm::mat4 mWorldTransform;

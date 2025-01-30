@@ -22,7 +22,7 @@ private:
 	bool LoadShaders();
 	void CreateSpriteVerts();
 
-	class Engine* mEngine;
+	class Window* mWindow;
 
 	class Shader* mSpriteShader;
 	class VertexArray* mSpriteVerts;

@@ -134,6 +134,7 @@
     <ClCompile Include="src\components\SpriteComponent.cpp" />
     <ClCompile Include="src\engine\game\GameObject.cpp" />
     <ClCompile Include="src\engine\Engine.cpp" />
+    <ClCompile Include="src\engine\Window.cpp" />
     <ClCompile Include="src\graphics\animation\Animation.cpp" />
     <ClCompile Include="src\graphics\animation\BoneTransform.cpp" />
     <ClCompile Include="src\graphics\animation\Skeleton.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="src\components\SpriteComponent.h" />
     <ClInclude Include="src\engine\game\GameObject.h" />
     <ClInclude Include="src\engine\Engine.h" />
+    <ClInclude Include="src\engine\Window.h" />
     <ClInclude Include="src\graphics\animation\Animation.h" />
     <ClInclude Include="src\graphics\animation\BoneTransform.h" />
     <ClInclude Include="src\graphics\animation\Skeleton.h" />

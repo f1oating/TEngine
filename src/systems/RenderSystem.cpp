@@ -1,5 +1,5 @@
 #include "RenderSystem.h"
-#include "engine/Engine.h"
+#include "engine/Window.h"
 #include "components/SpriteComponent.h"
 #include "graphics/VertexArray.h"
 #include "graphics/Shader.h"
@@ -8,13 +8,15 @@
 #include <GLFW/glfw3.h>
 
 RenderSystem::RenderSystem() :
-	mEngine(Engine::Get())
+	mWindow(nullptr)
 	, mSpriteShader(nullptr)
 	, mSpriteVerts(nullptr)
 {}
 
 bool RenderSystem::StartUp()
 {
+	mWindow = Window::Get();
+
 	if (!LoadShaders())
 	{
 		return false;
@@ -51,7 +53,7 @@ void RenderSystem::Draw()
 		}
 	}
 
-	glfwSwapBuffers(mEngine->GetWindow());
+	glfwSwapBuffers(mWindow->GetWindow());
 }
 
 void RenderSystem::AddSprite(SpriteComponent* sprite)

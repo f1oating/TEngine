@@ -1,13 +1,11 @@
 #include "SpriteComponent.h"
 #include "graphics/Texture.h"
 #include "graphics/Shader.h"
-#include "engine/Engine.h"
 #include "engine/game/GameObject.h"
 #include "systems/RenderSystem.h"
 
 SpriteComponent::SpriteComponent(GameObject* owner, int drawOrder)
 	:Component(owner)
-	, mEngine(Engine::Get())
 	, mTexture(nullptr)
 	, mDrawOrder(drawOrder)
 	, mTexWidth(0)

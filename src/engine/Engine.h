@@ -1,8 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
 class Engine
 {
@@ -21,18 +19,14 @@ public:
 	void AddObject(class GameObject* object);
 	void RemoveObject(class GameObject* object);
 
-	GLFWwindow* GetWindow() const { return mWindow; }
-
 private:
 	void Update();
 	void GenerateOutput();
-	bool InitializeGL();
-	void UnInitializeGL();
 
+	class Window* mWindow;
 	class RenderSystem* mRenderSystem;
 
 	bool mIsRunning;
-	GLFWwindow* mWindow;
 
 	std::vector<class GameObject*> mObjects;
 	std::vector<class GameObject*> mPendingObjects;
