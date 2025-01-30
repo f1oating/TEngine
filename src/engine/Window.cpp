@@ -1,6 +1,13 @@
 #include "Window.h"
+#include "systems/RenderSystem.h"
 
 #include <assert.h>
+
+void ReisizeCallback(GLFWwindow* window, int width, int height) {
+	Window::Get()->OnResize(width, height);
+	RenderSystem::Get()->OnResize(width, height);
+	glViewport(0, 0, width, height);
+}
 
 Window::Window() :
 	mWindow(nullptr)
@@ -8,7 +15,7 @@ Window::Window() :
 	,mHeight(0)
 {}
 
-bool Window::StartUp(const char* title, int width, int height)
+bool Window::Create(const char* title, int width, int height)
 {
 	mWidth = width;
 	mHeight = height;
@@ -24,6 +31,7 @@ bool Window::StartUp(const char* title, int width, int height)
 	}
 
 	glfwMakeContextCurrent(mWindow);
+	glfwSetFramebufferSizeCallback(mWindow, ReisizeCallback);
 
 	if (glewInit() != GLEW_OK) {
 		glfwTerminate();
@@ -33,10 +41,16 @@ bool Window::StartUp(const char* title, int width, int height)
 	return true;
 }
 
-void Window::Shutdown()
+void Window::Destroy()
 {
 	glfwDestroyWindow(mWindow);
 	glfwTerminate();
+}
+
+void Window::OnResize(int width, int height)
+{
+	mWidth = width;
+	mHeight = height;
 }
 
 bool Window::ShouldClose()

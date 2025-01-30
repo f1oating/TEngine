@@ -17,7 +17,7 @@ Engine::Engine() :
 bool Engine::StartUp()
 {
 	mWindow = Window::Get();
-	if (!mWindow->StartUp("TEngine", 800, 600)) { return false; }
+	if (!mWindow->Create("TEngine", 800, 600)) { return false; }
 
 	mRenderSystem = RenderSystem::Get();
 	if (!mRenderSystem->StartUp()) { return false; }
@@ -41,7 +41,7 @@ void Engine::RunLoop()
 
 void Engine::Shutdown()
 {
-	Window::Get()->Shutdown();
+	Window::Get()->Destroy();
 	mRenderSystem->Shutdown();
 	TextureManager::Get()->Shutdown();
 }

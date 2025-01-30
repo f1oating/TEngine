@@ -9,8 +9,10 @@ private:
 	Window();
 
 public:
-	bool StartUp(const char* title, int width, int height);
-	void Shutdown();
+	bool Create(const char* title, int width, int height);
+	void Destroy();
+
+	void OnResize(int width, int height);
 
 	bool ShouldClose();
 

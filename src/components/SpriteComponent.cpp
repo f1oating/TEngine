@@ -22,6 +22,15 @@ SpriteComponent::~SpriteComponent()
 
 void SpriteComponent::Draw(Shader* shader)
 {
+	glm::mat4 scaleMat = glm::scale(glm::mat4(1.0f), glm::vec3(
+		static_cast<float>(mTexWidth),
+		static_cast<float>(mTexHeight),
+		1.0f));
+
+	glm::mat4 world = scaleMat * mOwner->GetWorldTransform();
+
+	shader->SetMatrixUniform("uWorldTransform", world);
+
 	if (mTexture)
 	{
 		mTexture->SetActive();

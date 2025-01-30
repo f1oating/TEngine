@@ -6,6 +6,8 @@
 
 #include <assert.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 RenderSystem::RenderSystem() :
 	mWindow(nullptr)
@@ -32,6 +34,23 @@ void RenderSystem::Shutdown()
 	delete mSpriteVerts;
 	mSpriteShader->Unload();
 	delete mSpriteShader;
+}
+
+void RenderSystem::OnResize(int width, int height)
+{
+	if (mSpriteShader)
+	{
+		mSpriteShader->SetActive();
+		glm::mat4 viewProj = glm::ortho(
+			0.0f,
+			static_cast<float>(width),
+			static_cast<float>(height),
+			0.0f,
+			-1.0f,
+			1.0f
+		);
+		mSpriteShader->SetMatrixUniform("uViewProj", viewProj);
+	}
 }
 
 void RenderSystem::Draw()
@@ -86,6 +105,16 @@ bool RenderSystem::LoadShaders()
 	{
 		return false;
 	}
+	mSpriteShader->SetActive();
+	glm::mat4 viewProj = glm::ortho(
+		0.0f,
+		static_cast<float>(mWindow->GetWidth()),
+		static_cast<float>(mWindow->GetHeight()),
+		0.0f,
+		-1.0f,
+		1.0f
+	);
+	mSpriteShader->SetMatrixUniform("uViewProj", viewProj);
 
 	return true;
 }

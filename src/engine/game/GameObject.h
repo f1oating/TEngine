@@ -12,10 +12,6 @@ public:
 
 	void Update(float deltaTime);
 	void UpdateComponents(float deltaTime);
-	virtual void UpdateActor(float deltaTime);
-
-	void ProcessInput();
-	virtual void ActorInput();
 
 	void AddComponent(class Component* component);
 	void RemoveComponent(class Component* component);
@@ -27,6 +23,7 @@ public:
 	const glm::quat& GetRotation() const { return mRotation; }
 	void SetRotation(const glm::quat& rotation) { mRotation = rotation;   mRecomputeTransform = true; }
 
+	void ComputeWorldTransform();
 	const glm::mat4& GetWorldTransform() const { return mWorldTransform; }
 
 private:

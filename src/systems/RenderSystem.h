@@ -11,6 +11,8 @@ public:
 	bool StartUp();
 	void Shutdown();
 
+	void OnResize(int width, int height);
+
 	void Draw();
 
 	void AddSprite(class SpriteComponent* sprite);

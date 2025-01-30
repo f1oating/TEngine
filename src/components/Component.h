@@ -11,7 +11,7 @@ public:
 
 	int GetUpdateOrder() const { return mUpdateOrder; }
 
-private:
+protected:
 	class GameObject* mOwner;
 	int mUpdateOrder;
 

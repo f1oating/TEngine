@@ -10,7 +10,7 @@ TextureManager::TextureManager()
 
 bool TextureManager::StartUp()
 {
-	stbi_set_flip_vertically_on_load(false);
+	stbi_set_flip_vertically_on_load(true);
 
 	return true;
 }
