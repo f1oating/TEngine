@@ -2,9 +2,6 @@
 
 #include <vector>
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 class Engine
 {
 private:
@@ -15,22 +12,21 @@ public:
 	void RunLoop();
 	void Shutdown();
 
-	static Engine& Get();
+	static Engine* Get();
 
 	bool IsRunning() const { return mIsRunning; }
 
 	void AddObject(class GameObject* object);
 	void RemoveObject(class GameObject* object);
 
-	GLFWwindow* GetWindow() const { return mWindow; }
-
 private:
 	void Update();
-	bool InitializeGLFW();
-	void UnInitializeGLFW();
+	void GenerateOutput();
+
+	class Window* mWindow;
+	class RenderSystem* mRenderSystem;
 
 	bool mIsRunning;
-	GLFWwindow* mWindow;
 
 	std::vector<class GameObject*> mObjects;
 	std::vector<class GameObject*> mPendingObjects;

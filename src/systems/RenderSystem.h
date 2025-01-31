@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 class RenderSystem
 {
 private:
@@ -9,9 +11,23 @@ public:
 	bool StartUp();
 	void Shutdown();
 
-	static RenderSystem& Get();
+	void OnResize(int width, int height);
+
+	void Draw();
+
+	void AddSprite(class SpriteComponent* sprite);
+	void RemoveSprite(class SpriteComponent* sprite);
+
+	static RenderSystem* Get();
 
 private:
-	class Engine* mEngine;
+	bool LoadShaders();
+	void CreateSpriteVerts();
+
+	class Window* mWindow;
+
+	class Shader* mSpriteShader;
+	class VertexArray* mSpriteVerts;
+	std::vector<class SpriteComponent*> mSprites;
 
 };

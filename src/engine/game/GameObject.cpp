@@ -3,14 +3,18 @@
 #include "components/Component.h"
 
 GameObject::GameObject() :
-	mEngine(&Engine::Get())
+	mPosition(0)
+	, mRotation(1.0f, 0.0f, 0.0f, 0.0f)
+	, mWorldTransform(1.0f)
+	, mScale(1.0f)
+	, mRecomputeTransform(true)
 {
-	mEngine->AddObject(this);
+	Engine::Get()->AddObject(this);
 }
 
 GameObject::~GameObject() 
 {
-	mEngine->RemoveObject(this);
+	Engine::Get()->RemoveObject(this);
 
 	while (!mComponents.empty())
 	{
@@ -20,7 +24,10 @@ GameObject::~GameObject()
 
 void GameObject::Update(float deltaTime)
 {
-
+	if (mRecomputeTransform)
+	{
+		ComputeWorldTransform();
+	}
 }
 
 void GameObject::UpdateComponents(float deltaTime)
@@ -31,19 +38,13 @@ void GameObject::UpdateComponents(float deltaTime)
 	}
 }
 
-void GameObject::UpdateActor(float deltaTime)
+void GameObject::ComputeWorldTransform()
 {
-
-}
-
-void GameObject::ProcessInput()
-{
-
-}
-
-void GameObject::ActorInput()
-{
-
+	mRecomputeTransform = false;
+	glm::mat4 scaleMat = glm::scale(glm::mat4(1.0f), glm::vec3(mScale));
+	glm::mat4 rotationMat = glm::mat4_cast(mRotation);
+	glm::mat4 translationMat = glm::translate(glm::mat4(1.0f), mPosition);
+	mWorldTransform = translationMat * rotationMat * scaleMat;
 }
 
 void GameObject::AddComponent(class Component* component)

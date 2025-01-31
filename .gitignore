@@ -5,4 +5,4 @@ TEngine
 x64
 x32
 *.dll
-shaders
+res

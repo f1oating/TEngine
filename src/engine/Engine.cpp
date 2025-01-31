@@ -1,6 +1,8 @@
 #include "Engine.h"
+#include "Window.h"
 #include "game/GameObject.h"
 #include "systems/RenderSystem.h"
+#include "managers/TextureManager.h"
 
 #include <assert.h>
 #include <algorithm>
@@ -8,14 +10,19 @@
 Engine::Engine() :
 	mIsRunning(false)
 	,mWindow(nullptr)
+	,mRenderSystem(nullptr)
 	,mUpdatingObjects(false)
 {}
 
 bool Engine::StartUp()
 {
-	if (!InitializeGLFW()) { return false; }
+	mWindow = Window::Get();
+	if (!mWindow->Create("TEngine", 800, 600)) { return false; }
 
-	RenderSystem::Get().StartUp();
+	mRenderSystem = RenderSystem::Get();
+	if (!mRenderSystem->StartUp()) { return false; }
+
+	if (!TextureManager::Get()->StartUp()) { return false; }
 
 	mIsRunning = true;
 	return true;
@@ -25,24 +32,24 @@ void Engine::RunLoop()
 {
 	while (mIsRunning)
 	{
-		if (glfwWindowShouldClose(mWindow)) { mIsRunning = false; }
-
-		glClear(GL_COLOR_BUFFER_BIT);
-
 		Update();
+		GenerateOutput();
 
-		glfwSwapBuffers(mWindow);
 		glfwPollEvents();
 	}
 }
 
 void Engine::Shutdown()
 {
-	UnInitializeGLFW();
+	Window::Get()->Destroy();
+	mRenderSystem->Shutdown();
+	TextureManager::Get()->Shutdown();
 }
 
 void Engine::Update()
 {
+	if (mWindow->ShouldClose()) { mIsRunning = false; }
+
 	static float deltaTime = 0.0f;
 	static float lastFrame = 0.0f;
 
@@ -64,40 +71,17 @@ void Engine::Update()
 	mPendingObjects.clear();
 }
 
-bool Engine::InitializeGLFW()
+void Engine::GenerateOutput()
 {
-	if (!glfwInit()) {
-		return false;
-	}
-
-	mWindow = glfwCreateWindow(800, 600, "TEngine", nullptr, nullptr);
-	if (!mWindow) {
-		glfwTerminate();
-		return false;
-	}
-
-	glfwMakeContextCurrent(mWindow);
-
-	if (glewInit() != GLEW_OK) {
-		glfwTerminate();
-		return false;
-	}
-
-	return true;
+	mRenderSystem->Draw();
 }
 
-void Engine::UnInitializeGLFW()
-{
-	glfwDestroyWindow(mWindow);
-	glfwTerminate();
-}
-
-Engine& Engine::Get()
+Engine* Engine::Get()
 {
 	static Engine* engine = new Engine();
 	if (!engine) { engine = new Engine(); }
 	assert(engine);
-	return *engine;
+	return engine;
 }
 
 void Engine::AddObject(GameObject* actor)
