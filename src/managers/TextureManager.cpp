@@ -6,7 +6,7 @@
 #include <assert.h>
 
 TextureManager::TextureManager() :
-	mResFolder("res\\textures")
+	mTexFolder("res\\textures")
 {}
 
 bool TextureManager::StartUp()
@@ -37,7 +37,7 @@ Texture* TextureManager::GetTexture(std::string fileName)
 	else
 	{
 		tex = new Texture();
-		if (tex->Load(mResFolder + "\\" + fileName))
+		if (tex->Load(mTexFolder + "\\" + fileName))
 		{
 			mTextures.emplace(fileName, tex);
 		}

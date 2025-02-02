@@ -2,8 +2,7 @@
 
 #include "engine/Engine.h"
 #include "engine/game/GameObject.h"
-#include "components/SpriteComponent.h"
-#include "managers/TextureManager.h"
+#include "managers/MeshManager.h"
 #include "graphics/Mesh.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -12,8 +11,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	if (!engine->StartUp()) return 1;
 
-	Mesh* mesh = new Mesh();
-	mesh->Load("res\\meshes\\LowpolySoldier.fbx");
+	Mesh* mesh = MeshManager::Get()->GetMesh("LowpolySoldier.fbx");
 
 	engine->RunLoop();
 	engine->Shutdown();
