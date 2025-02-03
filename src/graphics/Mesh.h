@@ -4,6 +4,11 @@
 #include <string>
 #include <assimp/scene.h>
 
+struct GeometryChunk {
+	class VertexArray* vertexArray;
+	std::vector<class Texture*> textures;
+};
+
 class Mesh
 {
 public:
@@ -13,23 +18,15 @@ public:
 	bool Load(const std::string& fileName);
 	void Unload();
 
-	size_t GetNumVertexArrays() const { return mVertexArrays.size(); }
-	class VertexArray* GetVertexArray(size_t index) { return mVertexArrays[index]; }
-	class Texture* GetTexture(size_t meshIndex, size_t textureIndex);
+	size_t GetNumChunks() const { return mGeometryChunks.size(); }
+	const GeometryChunk& GetGeometryChunk(size_t index) const { return mGeometryChunks[index]; }
 	const std::string& GetFileName() const { return mFileName; }
-
-	/*
-		TODO
-		LoadBinary();
-		SaveBinary();
-	*/
 
 private:
 	void LoadTextures(aiMaterial* material, aiTextureType type,
-		const std::string& typeName, size_t meshIndex);
+		const std::string& typeName, GeometryChunk& chunk);
 
-	std::vector<std::vector<class Texture*>> mTextures;
-	std::vector<class VertexArray*> mVertexArrays;
+	std::vector<GeometryChunk> mGeometryChunks;
 	std::string mFileName;
 
 };

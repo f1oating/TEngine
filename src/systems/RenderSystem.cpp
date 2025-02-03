@@ -1,6 +1,7 @@
 #include "RenderSystem.h"
 #include "engine/Window.h"
 #include "components/SpriteComponent.h"
+#include "components/MeshComponent.h"
 #include "graphics/VertexArray.h"
 #include "graphics/Shader.h"
 
@@ -13,6 +14,7 @@ RenderSystem::RenderSystem() :
 	mWindow(nullptr)
 	, mSpriteShader(nullptr)
 	, mSpriteVerts(nullptr)
+	, mMeshShader(nullptr)
 {}
 
 bool RenderSystem::StartUp()
@@ -34,6 +36,8 @@ void RenderSystem::Shutdown()
 	delete mSpriteVerts;
 	mSpriteShader->Unload();
 	delete mSpriteShader;
+	mMeshShader->Unload();
+	delete mMeshShader;
 }
 
 void RenderSystem::OnResize(int width, int height)
@@ -98,6 +102,17 @@ void RenderSystem::RemoveSprite(SpriteComponent* sprite)
 	mSprites.erase(iter);
 }
 
+void RenderSystem::AddMeshComp(MeshComponent* mesh)
+{
+	mMeshes.emplace_back(mesh);
+}
+
+void RenderSystem::RemoveMeshComp(MeshComponent* mesh)
+{
+	auto iter = std::find(mMeshes.begin(), mMeshes.end(), mesh);
+	mMeshes.erase(iter);
+}
+
 bool RenderSystem::LoadShaders()
 {
 	mSpriteShader = new Shader();
@@ -115,6 +130,12 @@ bool RenderSystem::LoadShaders()
 		1.0f
 	);
 	mSpriteShader->SetMatrixUniform("uViewProj", viewProj);
+
+	mMeshShader = new Shader();
+	if (!mMeshShader->Load("shaders/BasicMesh.vert", "shaders/BasicMesh.frag"))
+	{
+		return false;
+	}
 
 	return true;
 }

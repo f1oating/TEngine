@@ -30,14 +30,16 @@ bool Mesh::Load(const std::string& fileName)
         return false;
     }
 
+    Unload();
+
     for (unsigned int i = 0; i < scene->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[i];
 
+        GeometryChunk chunk;
+
         std::vector<float> vertices;
         std::vector<unsigned int> indices;
-        unsigned int numVertex = 0;
-        unsigned int numIndex = 0;
 
         for (unsigned int j = 0; j < mesh->mNumVertices; j++)
         {
@@ -57,8 +59,6 @@ bool Mesh::Load(const std::string& fileName)
                 vertices.push_back(mesh->mTextureCoords[0][j].x);
                 vertices.push_back(mesh->mTextureCoords[0][j].y);
             }
-
-            numVertex++;
         }
 
         for (unsigned int j = 0; j < mesh->mNumFaces; j++)
@@ -68,22 +68,19 @@ bool Mesh::Load(const std::string& fileName)
             {
                 indices.push_back(face.mIndices[k]);
             }
-
-            numIndex++;
         }
 
-        VertexArray* vertexArray = new VertexArray(vertices.data(), numVertex,
-            VertexArray::PosNormTex, indices.data(), numIndex);
-        mVertexArrays.push_back(vertexArray);
+        chunk.vertexArray = new VertexArray(vertices.data(), static_cast<unsigned int>(vertices.size() / 8),
+            VertexArray::PosNormTex, indices.data(), static_cast<unsigned int>(indices.size()));
 
         if (mesh->mMaterialIndex >= 0)
         {
             aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-            mTextures.emplace_back();
-
-            LoadTextures(material, aiTextureType_DIFFUSE, "texture_diffuse", i);
-            LoadTextures(material, aiTextureType_SPECULAR, "texture_specular", i);
+            LoadTextures(material, aiTextureType_DIFFUSE, "texture_diffuse", chunk);
+            LoadTextures(material, aiTextureType_SPECULAR, "texture_specular", chunk);
         }
+
+        mGeometryChunks.push_back(chunk);
     }
 
     mFileName = fileName;
@@ -92,26 +89,15 @@ bool Mesh::Load(const std::string& fileName)
 
 void Mesh::Unload()
 {
-    for (auto vertexArray : mVertexArrays)
+    for (auto& chunk : mGeometryChunks)
     {
-        delete vertexArray;
+        delete chunk.vertexArray;
     }
-    mVertexArrays.clear();
-
-    mTextures.clear();
+    mGeometryChunks.clear();
 }
 
-Texture* Mesh::GetTexture(size_t meshIndex, size_t textureIndex)
-{
-    if (meshIndex < mTextures.size() && textureIndex < mTextures[meshIndex].size())
-    {
-        return mTextures[meshIndex][textureIndex];
-    }
-    return nullptr;
-}
-
-void Mesh::LoadTextures(aiMaterial* material, aiTextureType type, 
-    const std::string& typeName, size_t meshIndex)
+void Mesh::LoadTextures(aiMaterial* material, aiTextureType type,
+    const std::string& typeName, GeometryChunk& chunk)
 {
     for (unsigned int i = 0; i < material->GetTextureCount(type); i++)
     {
@@ -121,7 +107,7 @@ void Mesh::LoadTextures(aiMaterial* material, aiTextureType type,
         Texture* texture = TextureManager::Get()->GetTexture(str.C_Str());
         if (texture)
         {
-            mTextures[meshIndex].push_back(texture);
+            chunk.textures.push_back(texture);
         }
     }
 }

@@ -18,6 +18,9 @@ public:
 	void AddSprite(class SpriteComponent* sprite);
 	void RemoveSprite(class SpriteComponent* sprite);
 
+	void AddMeshComp(class MeshComponent* mesh);
+	void RemoveMeshComp(class MeshComponent* mesh);
+
 	static RenderSystem* Get();
 
 private:
@@ -29,5 +32,8 @@ private:
 	class Shader* mSpriteShader;
 	class VertexArray* mSpriteVerts;
 	std::vector<class SpriteComponent*> mSprites;
+
+	class Shader* mMeshShader;
+	std::vector<class MeshComponent*> mMeshes;
 
 };
