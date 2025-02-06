@@ -7,8 +7,6 @@
 
 #include <assert.h>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
 RenderSystem::RenderSystem() :
 	mWindow(nullptr)
@@ -38,23 +36,6 @@ void RenderSystem::Shutdown()
 	delete mSpriteShader;
 	mMeshShader->Unload();
 	delete mMeshShader;
-}
-
-void RenderSystem::OnResize(int width, int height)
-{
-	if (mSpriteShader)
-	{
-		mSpriteShader->SetActive();
-		glm::mat4 viewProj = glm::ortho(
-			0.0f,
-			static_cast<float>(width),
-			static_cast<float>(height),
-			0.0f,
-			-1.0f,
-			1.0f
-		);
-		mSpriteShader->SetMatrixUniform("uViewProj", viewProj);
-	}
 }
 
 void RenderSystem::Draw()
@@ -113,6 +94,24 @@ void RenderSystem::RemoveMeshComp(MeshComponent* mesh)
 	mMeshes.erase(iter);
 }
 
+void RenderSystem::SetProjMatrix(const glm::mat4& proj)
+{
+	mSpriteShader->SetActive();
+	mSpriteShader->SetMatrixUniform("uProj", proj);
+
+	mMeshShader->SetActive();
+	mMeshShader->SetMatrixUniform("uProj", proj);
+}
+
+void RenderSystem::SetViewMatrix(const glm::mat4& view)
+{
+	mSpriteShader->SetActive();
+	mSpriteShader->SetMatrixUniform("uView", view);
+
+	mMeshShader->SetActive();
+	mMeshShader->SetMatrixUniform("uView", view);
+}
+
 bool RenderSystem::LoadShaders()
 {
 	mSpriteShader = new Shader();
@@ -120,16 +119,6 @@ bool RenderSystem::LoadShaders()
 	{
 		return false;
 	}
-	mSpriteShader->SetActive();
-	glm::mat4 viewProj = glm::ortho(
-		0.0f,
-		static_cast<float>(mWindow->GetWidth()),
-		static_cast<float>(mWindow->GetHeight()),
-		0.0f,
-		-1.0f,
-		1.0f
-	);
-	mSpriteShader->SetMatrixUniform("uViewProj", viewProj);
 
 	mMeshShader = new Shader();
 	if (!mMeshShader->Load("shaders/BasicMesh.vert", "shaders/BasicMesh.frag"))

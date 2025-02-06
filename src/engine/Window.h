@@ -12,15 +12,13 @@ public:
 	bool Create(const char* title, int width, int height);
 	void Destroy();
 
-	void OnResize(int width, int height);
-
 	bool ShouldClose();
 
 	static Window* Get();
 
 	GLFWwindow* GetWindow() const { return mWindow; }
-	int GetWidth() const { return mWidth; }
-	int GetHeight() const { return mHeight; }
+	int GetWidth() { glfwGetWindowSize(mWindow, &mWidth, &mHeight); return mWidth; }
+	int GetHeight() { glfwGetWindowSize(mWindow, &mWidth, &mHeight); return mHeight; }
 
 private:
 	GLFWwindow* mWindow;
