@@ -2,8 +2,9 @@
 
 #include "engine/Engine.h"
 #include "engine/game/GameObject.h"
-#include "components/SpriteComponent.h"
 #include "managers/TextureManager.h"
+#include "components/SpriteComponent.h"
+#include "components/OrthographicCameraComponent.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -11,11 +12,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	if (!engine->StartUp()) return 1;
 
-	GameObject* object = new GameObject();
-	object->SetScale(0.5f);
-	object->SetPosition({0.2f, 0.2f, 1.0f});
-	SpriteComponent* sprite = new SpriteComponent(object);
-	sprite->SetTexture(TextureManager::Get()->GetTexture("res\\textures\\cat.jpg"));
+	GameObject* sprite = new GameObject();
+	SpriteComponent* spriteComponent = new SpriteComponent(sprite);
+	spriteComponent->SetTexture(TextureManager::Get()->GetTexture("cat.jpg"));
+	sprite->SetScale(0.4f);
+	sprite->SetPosition({0.2f, 0.2f, 1.0f});
+	OrthographicCameraComponent* camera = new OrthographicCameraComponent(sprite);
+	camera->SetResolution(1920, 1080);
 
 	engine->RunLoop();
 	engine->Shutdown();

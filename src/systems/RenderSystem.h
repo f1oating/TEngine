@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <glm/glm.hpp>
 
 class RenderSystem
 {
@@ -11,12 +12,16 @@ public:
 	bool StartUp();
 	void Shutdown();
 
-	void OnResize(int width, int height);
-
 	void Draw();
 
 	void AddSprite(class SpriteComponent* sprite);
 	void RemoveSprite(class SpriteComponent* sprite);
+
+	void AddMeshComp(class MeshComponent* mesh);
+	void RemoveMeshComp(class MeshComponent* mesh);
+
+	void SetProjMatrix(const glm::mat4& proj);
+	void SetViewMatrix(const glm::mat4& view);
 
 	static RenderSystem* Get();
 
@@ -29,5 +34,8 @@ private:
 	class Shader* mSpriteShader;
 	class VertexArray* mSpriteVerts;
 	std::vector<class SpriteComponent*> mSprites;
+
+	class Shader* mMeshShader;
+	std::vector<class MeshComponent*> mMeshes;
 
 };

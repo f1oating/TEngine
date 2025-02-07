@@ -2,6 +2,12 @@
 
 #include <vector>
 #include <string>
+#include <assimp/scene.h>
+
+struct GeometryChunk {
+	class VertexArray* vertexArray;
+	std::vector<class Texture*> textures;
+};
 
 class Mesh
 {
@@ -9,24 +15,18 @@ public:
 	Mesh();
 	~Mesh();
 
-	bool Load(const std::string& fileName, class Renderer* renderer);
+	bool Load(const std::string& fileName);
 	void Unload();
 
-	class VertexArray* GetVertexArray() { return mVertexArray; }
-	class Texture* GetTexture(size_t index);
-	const std::string& GetShaderName() const { return mShaderName; }
+	size_t GetNumChunks() const { return mGeometryChunks.size(); }
+	const GeometryChunk& GetGeometryChunk(size_t index) const { return mGeometryChunks[index]; }
 	const std::string& GetFileName() const { return mFileName; }
 
-	/*
-		TODO
-		LoadBinary();
-		SaveBinary();
-	*/
-
 private:
-	std::vector<class Texture*> mTextures;
-	class VertexArray* mVertexArray;
-	std::string mShaderName;
+	void LoadTextures(aiMaterial* material, aiTextureType type,
+		const std::string& typeName, GeometryChunk& chunk);
+
+	std::vector<GeometryChunk> mGeometryChunks;
 	std::string mFileName;
 
 };

@@ -4,8 +4,6 @@
 #include <assert.h>
 
 void ReisizeCallback(GLFWwindow* window, int width, int height) {
-	Window::Get()->OnResize(width, height);
-	RenderSystem::Get()->OnResize(width, height);
 	glViewport(0, 0, width, height);
 }
 
@@ -45,12 +43,6 @@ void Window::Destroy()
 {
 	glfwDestroyWindow(mWindow);
 	glfwTerminate();
-}
-
-void Window::OnResize(int width, int height)
-{
-	mWidth = width;
-	mHeight = height;
 }
 
 bool Window::ShouldClose()

@@ -3,6 +3,7 @@
 #include "game/GameObject.h"
 #include "systems/RenderSystem.h"
 #include "managers/TextureManager.h"
+#include "managers/MeshManager.h"
 
 #include <assert.h>
 #include <algorithm>
@@ -23,6 +24,7 @@ bool Engine::StartUp()
 	if (!mRenderSystem->StartUp()) { return false; }
 
 	if (!TextureManager::Get()->StartUp()) { return false; }
+	if (!MeshManager::Get()->StartUp()) { return false; }
 
 	mIsRunning = true;
 	return true;
@@ -44,6 +46,7 @@ void Engine::Shutdown()
 	Window::Get()->Destroy();
 	mRenderSystem->Shutdown();
 	TextureManager::Get()->Shutdown();
+	MeshManager::Get()->Shutdown();
 }
 
 void Engine::Update()
